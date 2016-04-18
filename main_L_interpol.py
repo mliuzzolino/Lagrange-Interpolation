@@ -9,8 +9,7 @@ import numpy as np
 def main(X, Y, log_data=False, outfile_path=None):
 
 	# Let n = len(X). Then the following must hold: Degree of L Poly < n
-	Degree_of_Legrange_Polynomial = 4
-
+	Degree_of_Legrange_Polynomial = len(X) - 1
 
 	# Generate Lagrane Polynomial
 	print("\tGenerating Lagrange Polynomials...")
@@ -37,18 +36,20 @@ def main(X, Y, log_data=False, outfile_path=None):
 		# Log data if enabled
 		if log_data:
 			utility.data_logger(inter_x, inter_y, outfile_path)
+
 		# Plot graphs with interpolated point
 		plot(X, Y, L, inter_x, inter_y)
 
 		
 if __name__ == '__main__':
 
-	# Predefined data points from textbook. Can make more dynamic later.
-	X = np.array([1, 2, 4, 5, 7])
-	Y = np.array([52, 5, -5, -40, 10])
-
 	# Print introduction
 	utility.introduction()
+	#X = np.array([1, 2, 4, 5, 7])
+	#Y = np.array([52, 5, -5, -40, 10])
+
+	# Obtains data
+	X, Y = utility.get_data()
 	
 	# Check if user wants to log data, obtain outfile name, and initiate main function
 	log_data, outfile_path = utility.prompt_user()

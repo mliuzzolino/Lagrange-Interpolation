@@ -1,5 +1,6 @@
 from __future__ import division
 import numpy as np
+import pandas as pd
 import sys, os
 
 
@@ -43,6 +44,16 @@ def prompt_user(default=True, prompt=None):
 		else:
 			print("\n\tERROR: Invalid entry.\n")
 			continue
+
+
+def check_file_exists(filename):
+
+	outfiles = check_existing_files('output', 'csv')
+
+	if filename in outfiles:
+		return True
+	else:
+		return False
 
 
 def get_outfile_name():
@@ -123,26 +134,96 @@ def get_user_input(L):
 	return x_inter
 
 
-def check_file_exists(filename):
+def check_existing_files(folder, suffix=None):
 
-	outfile_dir = "./data/output/"
-	term_command = "ls " + outfile_dir + "*.csv"
-	raw_outfiles = os.popen(term_command)
+	file_dir = "./data/" + folder + "/"
+	if suffix is None:
+		term_command = "ls " + file_dir + "*"
+	elif suffix is 'csv':
+		term_command = "ls " + file_dir + "*.csv"
+
+	raw_files = os.popen(term_command)
 
 	# Determine infiles already processed
-	outfiles = []
-	for index, outfile in enumerate(raw_outfiles):
-		outfiles.append(outfile[len(outfile_dir):-5])
+	files = []
+	for index, file_ in enumerate(raw_files):
+		if suffix is None:
+			files.append(file_[len(file_dir):].strip())
+		else:
+			files.append(file_[len(file_dir):-5].strip())
 
-	if filename in outfiles:
-		return True
-	else:
-		return False
+	return files
 
 
 def data_logger(inter_x, inter_y, outfile_name):
 	with open(outfile_name, 'a') as outfile:
 		line = "{},{}\n".format(inter_x, inter_y)
 		outfile.write(line)
+
+
+def get_data():
+
+	# Obtain list of input files
+	infiles = check_existing_files('input')
+
+	# List input files
+	print("\tSelect input data file:")
+	print('\t-----------------------')
+	for index, infile in enumerate(infiles):
+		print("\t{}. {}".format(index+1, infile))
+
+	
+	while True:
+		# Get user choice
+		user_choice = raw_input("\t>> ")
+	
+		# Checks for program quit
+		if user_choice == 'q':
+			print("\tExiting program...\n\n")
+			sys.exit()
+
+		# Checks for alphanumeric misentries
+		try:
+			user_choice = int(user_choice)
+		except:
+			print("\n\tERROR: Enter numeric, integer value corresponding to list above.")
+			continue
+
+		# Checks for integer to be within the correct file index range
+		if int(user_choice) <= 0 or int(user_choice) > index+1:
+			print("\n\tERROR: Incorrect entry range.")
+			continue
+
+		# Success!
+		else:
+			break
+
+	# Declare infile path
+	infile_name = infiles[user_choice-1]
+	data_path = './data/input/' + infile_name
+
+	# Create test dataframe from csv infile to check for headres
+	df_test = pd.read_csv(data_path)
+	
+	try:
+		int(df_test.columns[0])
+		header = False
+	except:
+		header = True
+
+	if header:
+		df = df_test
+	
+	elif not header:
+		df = pd.read_csv(data_path, header=None)
+	
+	# Rename columns for easy access
+	df.columns = ['x', 'y']
+
+	# Extra X and Y from dataframe
+	X = df['x']
+	Y = df['y']
+
+	return X, Y
 
 
