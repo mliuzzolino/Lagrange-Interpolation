@@ -45,8 +45,6 @@ if __name__ == '__main__':
 
 	# Print introduction
 	utility.introduction()
-	#X = np.array([1, 2, 4, 5, 7])
-	#Y = np.array([52, 5, -5, -40, 10])
 
 	# Obtains data
 	X, Y = utility.get_data()
