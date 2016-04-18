@@ -1,8 +1,8 @@
 from __future__ import division
 
 from modules.lagrange_polynomial import Lagrange_Polynomial
+from modules.graph import plot
 import modules.utilities as utility 
-
 import numpy as np
 
 	
@@ -38,7 +38,7 @@ def main(X, Y, log_data=False, outfile_path=None):
 		if log_data:
 			utility.data_logger(inter_x, inter_y, outfile_path)
 		# Plot graphs with interpolated point
-		utility.plot(X, Y, L, inter_x, inter_y)
+		plot(X, Y, L, inter_x, inter_y)
 
 		
 if __name__ == '__main__':

@@ -26,18 +26,18 @@ class Lagrange_Polynomial(object):
 
 
 	def generate_polynomial(self):
-		self.Y_LagrageP = []
+		self.Y_LagrangeP = []
 		for x in self.X_LagrangeP:
 			Pk = 0
 			for k, y in enumerate(self.Y):
 				Lk = self.L_coeff_function(x, k)
 				Pk += (y * Lk)
-			self.Y_LagrageP.append(Pk)
+			self.Y_LagrangeP.append(Pk)
 
 
 	def interpolate_at(self, inter_x):
 		for index, x in enumerate(self.X_LagrangeP):
 			if np.abs(inter_x - x) < 1e-4:
-				return self.Y_LagrageP[index]
+				return self.Y_LagrangeP[index]
 
 		return False
