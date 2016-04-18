@@ -24,7 +24,7 @@ def prompt_user(default=True, prompt=None):
 
 	while True:
 		if default:
-			user_choice = raw_input("\tWould you like to log the interpolated values (y/n)? ")
+			user_choice = raw_input("\n\tWould you like to log the interpolated values (y/n)? ")
 		else:
 			user_choice = raw_input(prompt)
 
